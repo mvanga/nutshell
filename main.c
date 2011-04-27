@@ -143,10 +143,6 @@ int main(int argc, char *argv[])
 	/* go into shell loop */
 	do {
 #if WITH_LIBREADLINE
-		if (buffer) {
-			free (buffer);
-			buffer = (char *)NULL;
-		}
 		buffer = readline ("> ");
 		if (buffer && *buffer)
 			add_history (buffer);
@@ -165,6 +161,12 @@ int main(int argc, char *argv[])
 		while ((str = strtok(NULL, ";")) != NULL)
 			run = !cexec(str);
 		strcpy(buffer, "");
+#if WITH_LIBREADLINE
+		if (buffer) {
+			free (buffer);
+			buffer = (char *)NULL;
+		}
+#endif
 	} while (run);
 	free_commands();
 	exit_nuts();
