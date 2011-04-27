@@ -3,6 +3,10 @@
 #include <stdlib.h>
 #include <ctype.h>
 
+#ifdef WITH_READLINE
+#include <readline.h>
+#endif
+
 #include <shell.h>
 #include <nut.h>
 
@@ -11,6 +15,9 @@
 
 #define ERROR "error: "
 #define WARN "warning: "
+
+char *readline (const char *);
+void add_history (const char *);
 
 static int setargs(char *args, char **argv)
 {
@@ -113,8 +120,12 @@ int run_script(char *filename, int script)
 int main(int argc, char *argv[])
 {
 	int run = 1;
-	char buffer[BUFSIZE];
 	char *str;
+#if WITH_LIBREADLINE
+	char *buffer = NULL;
+#else
+	char buffer[BUFSIZE];
+#endif
 
 	/* we have a script being called */
 	int i;
@@ -131,11 +142,21 @@ int main(int argc, char *argv[])
 	run_script(".nutrc", 0);
 	/* go into shell loop */
 	do {
+#if WITH_LIBREADLINE
+		if (buffer) {
+			free (buffer);
+			buffer = (char *)NULL;
+		}
+		buffer = readline ("> ");
+		if (buffer && *buffer)
+			add_history (buffer);
+#else
 		printf("> ");
 		fgets(buffer, BUFSIZE - 1, stdin);
 		/* get rid of trailing newline if any */
 		if (buffer[strlen(buffer) - 1] == '\n')
 			buffer[strlen(buffer) - 1] = '\0';
+#endif
 		if (strlen(buffer) == 0)
 			continue;
 		/* run the commands */

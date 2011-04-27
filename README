@@ -16,3 +16,12 @@ all files ending with the '.nut' extension.
 
 The shell also looks for a file called .nutrc in the current 
 directory and loads it at startup. Useful for adding initializers.
+
+The library also supports libreadline. With readline, you can
+have automatic shell history (and possibly, in the future, auto-
+completion of commands). To compile with libreadline instead of
+the basic input functions, compile using:
+
+	$ make READLINE=1
+
+Any bugs can be mailed to manohar dot vanga and gmail dot com
