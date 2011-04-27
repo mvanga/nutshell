@@ -1,0 +1,18 @@
+Nutshell is a simple, modular shell. It allows for the loading of
+multiple command sets through modules called "nuts". I required
+a shell that allowed me to switch the commands available but still
+provide the basic shell structure so nutshell was born. The shell
+is scriptable int that it can load scripts and run them with the
+current command set.
+
+To compile the shell, just run 'make'.
+
+To compile the 'core' nut, just change directory to modules/core
+and run 'make'. Remember to copy the 'core.nut' file to the root
+directory.
+
+At the moment, nutshell looks in its current directory and loads
+all files ending with the '.nut' extension.
+
+The shell also looks for a file called .nutrc in the current 
+directory and loads it at startup. Useful for adding initializers.
